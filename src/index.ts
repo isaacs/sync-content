@@ -18,7 +18,7 @@ import {
   readlink,
   symlink,
 } from 'node:fs/promises'
-import { dirname, resolve } from 'node:path'
+import { dirname, relative, resolve, sep } from 'node:path'
 import { Path, PathScurry } from 'path-scurry'
 import { rimraf, rimrafSync } from 'rimraf'
 
@@ -192,6 +192,17 @@ const contentMatchSync = (src: Path, dest: Path) => {
   /* c8 ignore stop */
 }
 
+// if a is a parent of b, or b is a parent of a, then one of them
+// will not start with .. in the relative path.
+const dots = `..${sep}`
+const dirsRelated = (a: string, b: string):boolean => {
+  if (a === b) return true
+  const relab = relative(a, b)
+  const relba = relative(a, b)
+  if (!relab.startsWith(dots) || !relba.startsWith(dots)) return true
+  return false
+}
+
 export const syncContent = async (from: string, to: string) => {
   const scurry = new PathScurry(from)
   const rfrom = resolve(from)
@@ -200,7 +211,7 @@ export const syncContent = async (from: string, to: string) => {
     throw new Error('cannot sync root directory')
   }
   /* c8 ignore start */
-  if (rfrom.startsWith(rto) || rto.startsWith(rfrom)) {
+  if (dirsRelated(rto, rfrom)) {
     /* c8 ignore stop */
     throw new Error('cannot copy directory into itself or its parent')
   }
@@ -244,7 +255,7 @@ export const syncContentSync = (from: string, to: string) => {
   if (dirname(rfrom) === rfrom || dirname(rto) === rto) {
     throw new Error('cannot sync root directory')
   }
-  if (rfrom.startsWith(rto) || rto.startsWith(rfrom)) {
+  if (dirsRelated(rto, rfrom)) {
     throw new Error('cannot copy directory into itself or its parent')
   }
   const [src, dest] = [

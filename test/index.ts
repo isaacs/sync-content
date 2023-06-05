@@ -52,7 +52,8 @@ t.test('basic test', async t => {
         },
       },
     },
-    contentmismatch: {
+    // content mismatch, test that we don't get fooled by similar names
+    s: {
       b: {
         link: t.fixture('symlink', 'file'),
         file: 'dfsa',
@@ -65,7 +66,8 @@ t.test('basic test', async t => {
         },
       },
     },
-    partial: {
+    // partial match, test that we don't get fooled by similar names
+    srcpartial: {
       b: {
         link: t.fixture('symlink', 'foo'),
         file: 'asfd',
@@ -104,11 +106,11 @@ t.test('basic test', async t => {
     const expect = await readFixture(from)
     for (const d of [
       'matching',
-      'partial',
+      'srcpartial',
       'diff',
       'nonexistent',
       'empty',
-      'contentmismatch',
+      's',
     ]) {
       const to = resolve(dir, d)
       t.test(d, async t => {
