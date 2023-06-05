@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig-base.json",
+  "include": ["src/index.ts", "src/bin.mts"],
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "dist-tmp/mjs"
+  }
+}
