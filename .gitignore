@@ -1,0 +1,22 @@
+# ignore most things, include a handful of others
+/*
+/.*
+!/src
+!/docs
+!/package.json
+!/package-lock.json
+!/README.md
+!/CONTRIBUTING.md
+!/LICENSE
+!/LICENSE.*
+!/CHANGELOG.md
+!/example
+!/scripts
+!/tap-snapshots
+!/test
+!/.gitignore
+!/.github
+!/.prettierignore
+!/.gitattributes
+!/tsconfig*.json
+!/typedoc.json
