@@ -1,4 +1,7 @@
-#!/usr/bin/env node --enable-source-maps
+#!/usr/bin/env node
+//@ts-ignore
+process.setSourceMapsEnabled(true)
+
 import { syncContent } from './index.js'
 
 const usage = () => `Usage:
