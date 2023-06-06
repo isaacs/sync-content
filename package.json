@@ -1,6 +1,6 @@
 {
   "name": "sync-content",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Synchronize the contents of one folder to another location, only copying files if contents differ.",
   "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
   "main": "./dist/cjs/index.js",
