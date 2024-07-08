@@ -2,9 +2,13 @@ import t from 'tap'
 
 import { spawn } from 'child_process'
 import { readFileSync, readlinkSync } from 'fs'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import { PathScurry } from 'path-scurry'
-import { syncContent, syncContentSync } from '../dist/cjs/index.js'
+import { syncContent, syncContentSync } from '../dist/esm/index.js'
+import {fileURLToPath} from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const readFixture = async (fixture: string): Promise<string[]> => {
   const s = new PathScurry(fixture)
@@ -25,7 +29,7 @@ const readFixture = async (fixture: string): Promise<string[]> => {
 }
 
 t.test('basic test', async t => {
-  const fixture = {
+  const fixture = () => ({
     src: {
       b: {
         link: t.fixture('symlink', 'foo'),
@@ -88,8 +92,8 @@ t.test('basic test', async t => {
       },
     },
     empty: {},
-  }
-  const root = t.testdir({ sync: fixture, async: fixture })
+  })
+  const root = t.testdir({ sync: fixture(), async: fixture() })
   for (const s of ['sync', 'async']) {
     const dir = resolve(root, s)
     const from = resolve(dir, 'src')
@@ -126,7 +130,7 @@ t.test('basic test', async t => {
 })
 
 t.test('bin', async t => {
-  const bin = resolve(__dirname, '../dist/mjs/bin.mjs')
+  const bin = resolve(__dirname, '../dist/esm/bin.mjs')
   const run = async (...args: string[]) => {
     const proc = spawn(process.execPath, [bin, ...args])
     const out: Buffer[] = []

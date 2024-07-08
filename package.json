@@ -3,22 +3,19 @@
   "version": "1.0.2",
   "description": "Synchronize the contents of one folder to another location, only copying files if contents differ.",
   "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/mjs/index.js",
-  "bin": "./dist/mjs/bin.mjs",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "bin": "./dist/esm/bin.mjs",
   "exports": {
-    "./package.json": {
-      "import": "./package.json",
-      "require": "./package.json"
-    },
+    "./package.json": "./package.json",
     ".": {
       "import": {
-        "types": "./dist/mjs/index.d.ts",
-        "default": "./dist/mjs/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
       }
     }
   },
@@ -30,16 +27,16 @@
     "preversion": "npm test",
     "postversion": "npm publish",
     "prepublishOnly": "git push origin --follow-tags",
-    "preprepare": "rm -rf dist",
-    "prepare": "tsc -p tsconfig.json && tsc -p tsconfig-esm.json && bash ./scripts/fixup.sh",
+    "prepare": "tshy",
     "pretest": "npm run prepare",
     "presnap": "npm run prepare",
-    "test": "c8 tap",
-    "snap": "c8 tap",
+    "test": "tap",
+    "snap": "tap",
     "format": "prettier --write . --loglevel warn",
     "typedoc": "typedoc --tsconfig tsconfig-esm.json ./src/*.ts"
   },
   "prettier": {
+    "experimentalTernaries": true,
     "semi": false,
     "printWidth": 75,
     "tabWidth": 2,
@@ -50,30 +47,18 @@
     "arrowParens": "avoid",
     "endOfLine": "lf"
   },
-  "tap": {
-    "coverage": false,
-    "node-arg": [
-      "--no-warnings",
-      "--loader",
-      "ts-node/esm"
-    ],
-    "ts": false
-  },
   "dependencies": {
-    "glob": "^10.2.6",
+    "glob": "^11.0.0",
     "mkdirp": "^3.0.1",
     "path-scurry": "^2.0.0",
-    "rimraf": "^5.0.1"
+    "rimraf": "^6.0.0",
+    "tshy": "^2.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.1.5",
-    "@types/tap": "^15.0.8",
-    "c8": "^7.14.0",
-    "prettier": "^2.8.6",
-    "tap": "^16.3.6",
-    "ts-node": "^10.9.1",
-    "typedoc": "^0.24.7",
-    "typescript": "^5.0.2"
+    "@types/node": "^20.14.10",
+    "prettier": "^3.3.2",
+    "tap": "^20.0.3",
+    "typedoc": "^0.26.3"
   },
   "engines": {
     "node": "20 || >=22"
@@ -81,5 +66,13 @@
   "funding": {
     "url": "https://github.com/sponsors/isaacs"
   },
-  "repository": "https://github.com/isaacs/sync-content"
+  "repository": "https://github.com/isaacs/sync-content",
+  "type": "module",
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
+  "types": "./dist/commonjs/index.d.ts"
 }
