@@ -62,7 +62,7 @@
   "dependencies": {
     "glob": "^10.2.6",
     "mkdirp": "^3.0.1",
-    "path-scurry": "^1.9.2",
+    "path-scurry": "^2.0.0",
     "rimraf": "^5.0.1"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "typescript": "^5.0.2"
   },
   "engines": {
-    "node": ">=14"
+    "node": "20 || >=22"
   },
   "funding": {
     "url": "https://github.com/sponsors/isaacs"
