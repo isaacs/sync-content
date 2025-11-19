@@ -9,6 +9,7 @@ import {
   readFileSync,
   readlinkSync,
   symlinkSync,
+  unlinkSync,
 } from 'node:fs'
 import {
   chmod,
@@ -85,7 +86,7 @@ const syncFile = async (src: Path, dest: Path) => {
       // platform specific
       /* c8 ignore start */
       await link(src.fullpath(), dest.fullpath()).catch(() =>
-        copyFile(src.fullpath(), dest.fullpath())
+        copyFile(src.fullpath(), dest.fullpath()),
       )
       /* c8 ignore stop */
     }
@@ -147,6 +148,7 @@ const syncFileSync = (src: Path, dest: Path) => {
       /* c8 ignore stop */
     }
   }
+
   const mode = src.mode
   /* c8 ignore start */
   if (!mode) return
@@ -195,7 +197,7 @@ const contentMatchSync = (src: Path, dest: Path) => {
 // if a is a parent of b, or b is a parent of a, then one of them
 // will not start with .. in the relative path.
 const dots = `..${sep}`
-const dirsRelated = (a: string, b: string):boolean => {
+const dirsRelated = (a: string, b: string): boolean => {
   if (a === b) return true
   const relab = relative(a, b)
   const relba = relative(a, b)
@@ -283,6 +285,7 @@ export const syncContentSync = (from: string, to: string) => {
       /* c8 ignore start */
       try {
         rimrafSync(d.fullpath())
+        unlinkSync(d.fullpath())
       } catch {}
       /* c8 ignore stop */
     }

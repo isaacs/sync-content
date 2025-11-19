@@ -5,7 +5,7 @@ import { readFileSync, readlinkSync } from 'fs'
 import { dirname, resolve } from 'path'
 import { PathScurry } from 'path-scurry'
 import { syncContent, syncContentSync } from '../dist/esm/index.js'
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -14,15 +14,15 @@ const readFixture = async (fixture: string): Promise<string[]> => {
   const s = new PathScurry(fixture)
   const entries: string[] = []
   for await (const e of s.iterate()) {
+    const rp = e.relativePosix()
     entries.push(
-      e.relativePosix() +
-        (e.isDirectory()
-          ? '/'
-          : e.isSymbolicLink()
-          ? '@ ' + readlinkSync(e.fullpath())
-          : e.isFile()
-          ? '# ' + readFileSync(e.fullpath(), 'utf8')
+      !rp ? './' : (
+        rp +
+          (e.isDirectory() ? '/'
+          : e.isSymbolicLink() ? '@ ' + readlinkSync(e.fullpath())
+          : e.isFile() ? '# ' + readFileSync(e.fullpath(), 'utf8')
           : '???')
+      ),
     )
   }
   return entries.sort((a, b) => a.localeCompare(b, 'en'))
@@ -144,7 +144,7 @@ t.test('bin', async t => {
           stderr: Buffer.concat(err).toString(),
           code,
           signal,
-        })
+        }),
       )
     })
   }
