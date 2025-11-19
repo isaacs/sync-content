@@ -5,7 +5,15 @@
   "author": "Isaac Z. Schlueter <i@izs.me> (https://blog.izs.me)",
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
+  "types": "./dist/commonjs/index.d.ts",
   "bin": "./dist/esm/bin.mjs",
+  "type": "module",
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -32,20 +40,8 @@
     "presnap": "npm run prepare",
     "test": "tap",
     "snap": "tap",
-    "format": "prettier --write . --loglevel warn",
-    "typedoc": "typedoc --tsconfig tsconfig-esm.json ./src/*.ts"
-  },
-  "prettier": {
-    "experimentalTernaries": true,
-    "semi": false,
-    "printWidth": 75,
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
-    "jsxSingleQuote": false,
-    "bracketSameLine": true,
-    "arrowParens": "avoid",
-    "endOfLine": "lf"
+    "format": "prettier --write . --log-level warn",
+    "typedoc": "typedoc --tsconfig .tshy/esm.json ./src/*.ts"
   },
   "dependencies": {
     "glob": "^11.0.0",
@@ -66,13 +62,5 @@
   "funding": {
     "url": "https://github.com/sponsors/isaacs"
   },
-  "repository": "https://github.com/isaacs/sync-content",
-  "type": "module",
-  "tshy": {
-    "exports": {
-      "./package.json": "./package.json",
-      ".": "./src/index.ts"
-    }
-  },
-  "types": "./dist/commonjs/index.d.ts"
+  "repository": "git@github.com/isaacs/sync-content"
 }

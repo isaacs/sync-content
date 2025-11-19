@@ -2,7 +2,6 @@
 /*
 /.*
 !/src
-!/docs
 !/package.json
 !/package-lock.json
 !/README.md
@@ -16,7 +15,8 @@
 !/test
 !/.gitignore
 !/.github
-!/.prettierignore
+!/.prettier*
 !/.gitattributes
 !/tsconfig*.json
 !/typedoc.json
+!/.tshy
