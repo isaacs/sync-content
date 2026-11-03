@@ -20,13 +20,14 @@ import {
   symlink,
 } from 'node:fs/promises'
 import { dirname, relative, resolve, sep } from 'node:path'
-import { Path, PathScurry } from 'path-scurry'
+import type { Path } from 'path-scurry'
+import { PathScurry } from 'path-scurry'
 import { rimraf, rimrafSync } from 'rimraf'
 
 const mkdirpClobber = async (dir: string) => {
   try {
     return await mkdirp(dir)
-  } catch (e) {
+  } catch {
     await mkdirpClobber(dirname(dir))
     await rimraf(dir)
     return await mkdirp(dir)
@@ -36,7 +37,7 @@ const mkdirpClobber = async (dir: string) => {
 const mkdirpClobberSync = (dir: string) => {
   try {
     return mkdirpSync(dir)
-  } catch (e) {
+  } catch {
     mkdirpClobberSync(dirname(dir))
     rimrafSync(dir)
     return mkdirpSync(dir)
@@ -218,8 +219,8 @@ export const syncContent = async (from: string, to: string) => {
     throw new Error('cannot copy directory into itself or its parent')
   }
   const [src, dest] = await Promise.all([
-    await glob('**', { scurry, withFileTypes: true }),
-    await glob('**', { cwd: rto, withFileTypes: true }),
+    glob('**', { scurry, withFileTypes: true }),
+    glob('**', { cwd: rto, withFileTypes: true }),
   ])
   await Promise.all([
     ...src.map(async s => {

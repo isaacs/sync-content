@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// oxlint-disable no-console
 //@ts-ignore
 process.setSourceMapsEnabled(true)
 
